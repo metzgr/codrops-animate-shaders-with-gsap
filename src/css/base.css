@@ -33,6 +33,7 @@ body {
 
 @media (scripting: enabled) {
   .loading {
+
     &::before,
     &::after {
       content: '';
@@ -196,6 +197,7 @@ a {
 body #cdawrap {
   grid-area: unset;
   text-align: right;
+
   @media (max-width: 767px) {
     text-align: center;
   }
@@ -220,16 +222,16 @@ body #cdawrap {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      gap: 3rem;
+      gap: 5rem;
 
       padding-left: 45vw;
       padding-right: 40vw;
 
       img {
-        width: 30rem;
+        width: 42rem;
 
         @media (max-width: 767px) {
-          width: 28rem;
+          width: 35rem;
         }
       }
     }
