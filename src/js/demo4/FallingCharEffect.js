@@ -67,38 +67,63 @@ export default class FallingCharEffect {
     // Called when carousel layout is known or updated
     setCarouselItems(items) {
         // remove existing static bodies
-        this.staticBodies.forEach(body => Matter.Composite.remove(this.engine.world, body));
+        this.staticBodies.forEach(compositeBody => {
+            // It's likely an array of bodies now
+            if (Array.isArray(compositeBody)) {
+                compositeBody.forEach(b => Matter.Composite.remove(this.engine.world, b));
+            } else {
+                Matter.Composite.remove(this.engine.world, compositeBody);
+            }
+        });
         this.staticBodies = [];
         this.itemRects = [];
 
         items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            // Store initial relative offset or just use the element reference if we want to query rect every frame (expensive)
-            // Better: pass the element and draggable offset info.
-            // For now, let's just create bodies based on current Rect and update them in render() by tracking element position
-
-            // Actually, since we have the draggable, we know the scroll offset.
-            // But simple way: just use the element's client rect for positioning, 
-            // assuming we update it every frame.
-
-            // We need to store reference to element to query its position
-            this.itemRects.push({ el: item, body: null });
+            this.itemRects.push({ el: item, bodies: null });
         });
 
-        // Create bodies for them
+        // Create bucket bodies for them
+        const wallThickness = 20;
+
         this.itemRects.forEach(itemData => {
-            const rect = itemData.el.getBoundingClientRect();
-            // Matter.js bodies are positioned at their center
-            const body = Matter.Bodies.rectangle(
+            // Find the image within the item to get the "shaded area" bounds
+            const img = itemData.el.querySelector('img');
+            const rect = img ? img.getBoundingClientRect() : itemData.el.getBoundingClientRect();
+
+            // Floor
+            // Positioned so top edge aligns with rect.bottom
+            const floor = Matter.Bodies.rectangle(
                 rect.left + rect.width / 2,
-                rect.top + rect.height / 2,
+                rect.bottom + wallThickness / 2,
                 rect.width,
+                wallThickness,
+                { isStatic: true }
+            );
+
+            // Left Wall
+            // Positioned so right (inner) edge aligns with rect.left
+            const leftWall = Matter.Bodies.rectangle(
+                rect.left - wallThickness / 2,
+                rect.top + rect.height / 2,
+                wallThickness,
                 rect.height,
                 { isStatic: true }
             );
-            itemData.body = body;
-            Matter.Composite.add(this.engine.world, body);
-            this.staticBodies.push(body);
+
+            // Right Wall
+            // Positioned so left (inner) edge aligns with rect.right
+            const rightWall = Matter.Bodies.rectangle(
+                rect.right + wallThickness / 2,
+                rect.top + rect.height / 2,
+                wallThickness,
+                rect.height,
+                { isStatic: true }
+            );
+
+            const bodies = [floor, leftWall, rightWall];
+            itemData.bodies = bodies;
+            Matter.Composite.add(this.engine.world, bodies);
+            this.staticBodies.push(bodies);
         });
     }
 
@@ -108,14 +133,30 @@ export default class FallingCharEffect {
 
         // 2. Sync Static Bodies (Carousel Items) to their visual position
         // This handles the carousel dragging/scrolling
+        const wallThickness = 20;
+
         this.itemRects.forEach(itemData => {
-            const rect = itemData.el.getBoundingClientRect();
-            Matter.Body.setPosition(itemData.body, {
+            const img = itemData.el.querySelector('img');
+            const rect = img ? img.getBoundingClientRect() : itemData.el.getBoundingClientRect();
+            const [floor, leftWall, rightWall] = itemData.bodies;
+
+            // Update Floor
+            Matter.Body.setPosition(floor, {
                 x: rect.left + rect.width / 2,
+                y: rect.bottom + wallThickness / 2
+            });
+
+            // Update Left Wall
+            Matter.Body.setPosition(leftWall, {
+                x: rect.left - wallThickness / 2,
                 y: rect.top + rect.height / 2
             });
 
-            // Also update rotation/scale if needed, but for now just pos
+            // Update Right Wall
+            Matter.Body.setPosition(rightWall, {
+                x: rect.right + wallThickness / 2,
+                y: rect.top + rect.height / 2
+            });
         });
 
         // 3. Sync DOM elements to Falling Bodies
