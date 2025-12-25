@@ -59,7 +59,7 @@ export default class FallingCharEffect {
         // DOM Element
         const el = document.createElement('div');
         el.classList.add('falling-char');
-        el.textContent = '+';
+        el.textContent = '▮';
         this.container.appendChild(el);
         this.domElements.push(el);
     }
@@ -83,7 +83,8 @@ export default class FallingCharEffect {
         });
 
         // Create bucket bodies for them
-        const wallThickness = 20;
+        // Make walls thinner and position them INSIDE the image rect to avoid blocking gaps
+        const wallThickness = 5;
 
         this.itemRects.forEach(itemData => {
             // Find the image within the item to get the "shaded area" bounds
@@ -101,9 +102,9 @@ export default class FallingCharEffect {
             );
 
             // Left Wall
-            // Positioned so right (inner) edge aligns with rect.left
+            // Positioned INSIDE: center x = rect.left + wallThickness/2
             const leftWall = Matter.Bodies.rectangle(
-                rect.left - wallThickness / 2,
+                rect.left + wallThickness / 2,
                 rect.top + rect.height / 2,
                 wallThickness,
                 rect.height,
@@ -111,9 +112,9 @@ export default class FallingCharEffect {
             );
 
             // Right Wall
-            // Positioned so left (inner) edge aligns with rect.right
+            // Positioned INSIDE: center x = rect.right - wallThickness/2
             const rightWall = Matter.Bodies.rectangle(
-                rect.right + wallThickness / 2,
+                rect.right - wallThickness / 2,
                 rect.top + rect.height / 2,
                 wallThickness,
                 rect.height,
@@ -133,7 +134,7 @@ export default class FallingCharEffect {
 
         // 2. Sync Static Bodies (Carousel Items) to their visual position
         // This handles the carousel dragging/scrolling
-        const wallThickness = 20;
+        const wallThickness = 5;
 
         this.itemRects.forEach(itemData => {
             const img = itemData.el.querySelector('img');
@@ -148,13 +149,13 @@ export default class FallingCharEffect {
 
             // Update Left Wall
             Matter.Body.setPosition(leftWall, {
-                x: rect.left - wallThickness / 2,
+                x: rect.left + wallThickness / 2,
                 y: rect.top + rect.height / 2
             });
 
             // Update Right Wall
             Matter.Body.setPosition(rightWall, {
-                x: rect.right + wallThickness / 2,
+                x: rect.right - wallThickness / 2,
                 y: rect.top + rect.height / 2
             });
         });

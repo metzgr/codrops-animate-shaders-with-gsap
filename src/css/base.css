@@ -373,5 +373,6 @@ body #cdawrap {
   /* light blue */
   user-select: none;
   pointer-events: none;
+  opacity: 1;
   will-change: transform;
 }
