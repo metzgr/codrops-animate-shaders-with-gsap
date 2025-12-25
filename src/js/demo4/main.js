@@ -32,6 +32,8 @@ carouselInnerRef.innerHTML = '';
 processedData.forEach(item => {
   const div = document.createElement('div');
   div.className = 'content__carousel-image';
+  div.style.cursor = 'pointer';
+  div.onclick = () => window.location.href = `/project.html?project=${encodeURIComponent(item.project)}`;
   div.innerHTML = `
     <img src="./images/${item.image}" alt="" role="presentation" />
     <span class="carousel-label">
