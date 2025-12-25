@@ -1,3 +1,10 @@
+// Text Animation Imports
+import Commons from './textEffect/Commons';
+import WebGLText from './textEffect/WebGLText';
+import PostProcessing from './textEffect/PostProcessing';
+import * as THREE from 'three';
+
+// Data & Utils
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -6,32 +13,29 @@ import { carouselData } from './demo4/carouselData';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Layout configurations
+// --- Layout & Content Generation code (unchanged) ---
 const layouts = [
     { r: 1, c: 1, s: 4 },
     { r: 2, c: 5, s: 3 },
     { r: 3, c: 3, s: 2 },
     { r: 4, c: 1, s: 2 },
     { r: 5, c: 3, s: 5 },
-    { r: 6, c: 2, s: 1 }, // Default s=1
+    { r: 6, c: 2, s: 1 },
     { r: 7, c: 3, s: 3 },
     { r: 8, c: 6, s: 2 },
     { r: 9, c: 1, s: 5 },
     { r: 10, c: 6, s: 3 },
 ];
 
-// Get Project Name from URL
 const params = new URLSearchParams(window.location.search);
-const projectName = params.get('project') || "President’s Management Agenda"; // Default fallback
+const projectName = params.get('project') || "President’s Management Agenda";
 
-// Filter Data
 const projectItems = carouselData.filter(item => item.project === projectName);
 
-// Assign Sequence map if needed, but we can just use index + 1
-// We need to match the user request: "first 2 or 3 images should feature the 1 and 2 image"
+const titleElement = document.querySelector('.frame__title');
+titleElement.textContent = projectName;
+titleElement.setAttribute('data-animation', 'webgl-text'); // Add trigger attribute
 
-// Render
-document.querySelector('.frame__title').textContent = projectName;
 document.title = `${projectName} - Ivan Metzger`;
 
 const grid = document.querySelector('.grid');
@@ -40,7 +44,6 @@ if (projectItems.length === 0) {
     grid.innerHTML = '<p style="text-align:center;">No images found for this project.</p>';
 } else {
     projectItems.forEach((item, index) => {
-        // Recycle layouts if we have more items than layouts
         const layout = layouts[index % layouts.length];
         const span = layout.s || 1;
 
@@ -50,7 +53,6 @@ if (projectItems.length === 0) {
         figure.style.setProperty('--c', layout.c);
         figure.style.setProperty('--s', span);
 
-        // Sequence ID (01, 02)
         const seq = String(index + 1).padStart(2, '0');
 
         figure.innerHTML = `
@@ -66,7 +68,49 @@ if (projectItems.length === 0) {
     });
 }
 
-// Animation & Smooth Scroll
+// --- Text Animation Globals ---
+let commons;
+let scene;
+let texts = [];
+let postProcessing;
+
+const initTextAnimation = (lenisInstance) => {
+    // Wait for fonts?
+    document.fonts.ready.then(() => {
+        commons = Commons.getInstance();
+        commons.init(lenisInstance); // Pass existing Lenis
+
+        scene = new THREE.Scene();
+
+        const textElements = document.querySelectorAll('[data-animation="webgl-text"]');
+        if (textElements) {
+            texts = Array.from(textElements).map(el => new WebGLText({
+                element: el,
+                scene: scene
+            }));
+        }
+
+        postProcessing = new PostProcessing({ scene });
+
+        // Add resize listener
+        window.addEventListener("resize", () => {
+            commons.onResize();
+            texts.forEach(el => el.onResize());
+            postProcessing.onResize();
+        });
+
+        // Start animation loop incorporated with GSAP ticker or separate raf?
+        // Since we hook into GSAP ticker for Lenis, we can hook this in too.
+        gsap.ticker.add(() => {
+            commons.update();
+            texts.forEach(el => el.update());
+            postProcessing.update();
+        });
+    });
+};
+
+
+// --- Animation & Smooth Scroll ---
 let lenis;
 
 const initSmoothScrolling = () => {
@@ -82,6 +126,9 @@ const initSmoothScrolling = () => {
     });
 
     gsap.ticker.lagSmoothing(0);
+
+    // Initialize Text Animation now that Lenis is ready
+    initTextAnimation(lenis);
 };
 
 const scroll = () => {

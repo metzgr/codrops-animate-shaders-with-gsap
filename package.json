@@ -15,7 +15,9 @@
     "glsl-fast-gaussian-blur": "^1.0.2",
     "gsap": "^3.13.0",
     "lenis": "^1.3.16",
+    "motion": "^12.23.26",
     "three": "^0.180.0",
+    "troika-three-text": "^0.52.4",
     "vite-plugin-glsl": "^1.5.1"
   }
 }

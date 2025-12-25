@@ -19,6 +19,7 @@ void main() {
     // Applying the RGB shift to the wave-distorted coordinates
     float r = texture2D(tDiffuse, vec2(waveUv.x, waveUv.y + uVelocity * 0.0005)).r;
     vec2 gb = texture2D(tDiffuse, waveUv).gb;
+    float a = texture2D(tDiffuse, waveUv).a;
 
-    gl_FragColor = vec4(r, gb, r);
+    gl_FragColor = vec4(r, gb, a);
 }

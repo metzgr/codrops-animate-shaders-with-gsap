@@ -4,6 +4,11 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce, preloadImages } from '../utils';
 import Stage from './Stage';
+import Commons from '../textEffect/Commons';
+import WebGLText from '../textEffect/WebGLText';
+import PostProcessing from '../textEffect/PostProcessing';
+import * as THREE from 'three';
+import Lenis from 'lenis';
 
 import { carouselData } from './carouselData';
 
@@ -109,6 +114,65 @@ function resize() {
 }
 
 preloadImages().then(() => document.body.classList.remove('loading'));
+
+// --- Text Animation Globals ---
+let commons;
+let scene;
+let texts = [];
+let postProcessing;
+
+// Initialize Lenis for Home
+const lenis = new Lenis({
+  lerp: 0.1, // Smooth
+  smoothWheel: true,
+  orientation: 'vertical', // Default
+});
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+// Initialize Text Animation
+initTextAnimation(lenis);
+
+function initTextAnimation(lenisInstance) {
+  document.fonts.ready.then(() => {
+    commons = Commons.getInstance();
+
+    commons.init(lenisInstance);
+
+    scene = new THREE.Scene();
+
+    const textElements = document.querySelectorAll('[data-animation="webgl-text"]');
+
+    if (textElements) {
+      texts = Array.from(textElements).map(el => {
+        return new WebGLText({
+          element: el,
+          scene: scene
+        });
+      });
+    }
+
+    postProcessing = new PostProcessing({ scene });
+
+    window.addEventListener("resize", () => {
+      commons.onResize();
+      texts.forEach(el => el.onResize());
+      postProcessing.onResize();
+    });
+
+    gsap.ticker.add(() => {
+      commons.update();
+      texts.forEach(el => el.update());
+      postProcessing.update();
+    });
+  });
+};
 
 window.addEventListener('load', resize);
 window.addEventListener('resize', debounce(resize));
