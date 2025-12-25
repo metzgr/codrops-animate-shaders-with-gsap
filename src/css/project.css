@@ -6,14 +6,18 @@
 
 :root {
     font-size: 16px;
-    --color-text: #ffffff;
-    --color-bg: #0F0F0F;
-    --color-link: #aaa;
-    --color-link-hover: #fff;
+    --color-text: #000;
+    --color-bg: #F9F9EF;
+    --color-link: #000;
+    --color-link-hover: #000;
     --color-title: #7f7f8f;
     --color-year: #b9b3af;
     --img-ratio: 1.5;
     --s: 1;
+    --page-padding: 3vw;
+    --page-padding-vertical: 5vh;
+    --color-accent: #000000;
+    --color-gray: #959595;
 }
 
 body {
@@ -98,40 +102,74 @@ a:focus-visible {
 
 .frame {
     position: relative;
-    padding: 1.5rem 2.25rem;
+    top: 0;
+    left: 0;
+    width: 100vw;
+
     display: grid;
-    min-height: 400px;
-    width: 100%;
-    grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: '... ... prev back' 'title title title title' 'demos demos demos demos';
-    grid-row-gap: 0.1875rem;
-    grid-column-gap: 1.5rem;
-    pointer-events: none;
-    justify-items: start;
+    grid-template-columns: 200px 1fr 200px;
+    justify-content: space-between;
+    padding: var(--page-padding-vertical) var(--page-padding);
+    z-index: 10;
+
+    @media (max-width: 767px) {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+}
+
+.frame__title {
+    font-size: clamp(2rem, 8vw, 6rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.1rem;
+    margin-bottom: 0.5625rem;
+    color: var(--color-text);
+    /* Use text color */
+
+    @media (max-width: 767px) {
+        line-height: 1.15;
+    }
+}
+
+.frame__center {
+    text-align: center;
+
+    nav {
+        font-size: clamp(0.9375rem, 1.75vw, 1.5rem);
+        color: var(--color-gray);
+
+        a {
+            color: var(--color-gray);
+        }
+
+        .active {
+            color: var(--color-accent);
+        }
+    }
+}
+
+.frame__resume {
+    justify-self: end;
+}
+
+.frame__tags,
+.frame__resume {
+    padding-top: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
 }
 
 .frame a {
     pointer-events: auto;
-}
-
-.frame__title {
-    grid-area: title;
-    justify-self: center;
-    text-align: center;
-    font-family: "devils-haircut", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: clamp(3rem, 15vw, 9rem);
-    margin: 0;
-    max-width: none;
-    line-height: 0.75;
-    color: #3BC77A;
-}
-
-.frame__back {
-    grid-area: back;
-    justify-self: end;
-    font-size: 1.125rem;
 }
 
 .grid {
