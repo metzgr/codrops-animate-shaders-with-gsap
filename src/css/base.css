@@ -343,8 +343,35 @@ body #cdawrap {
     white-space: nowrap;
   }
 
+
   .floating-bar__link-back {
     background-color: #000000;
     color: #ffffff;
   }
+}
+
+/* Falling Characters Effect */
+.falling-chars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.falling-char {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #6495ed;
+  /* light blue */
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
 }

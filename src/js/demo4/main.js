@@ -4,6 +4,7 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce, preloadImages } from '../utils';
 import Stage from './Stage';
+import FallingCharEffect from './FallingCharEffect';
 import Commons from '../textEffect/Commons';
 import WebGLText from '../textEffect/WebGLText';
 import PostProcessing from '../textEffect/PostProcessing';
@@ -48,6 +49,13 @@ processedData.forEach(item => {
   `;
   carouselInnerRef.appendChild(div);
 });
+
+
+
+const fallingCharEffect = new FallingCharEffect();
+// Wait a bit for layout or just pass items now (images might load later altering layout but usually dimensions are fixed)
+const carouselItems = Array.from(document.querySelectorAll('.content__carousel-image'));
+fallingCharEffect.setCarouselItems(carouselItems);
 
 const stage = new Stage(carouselWrapper);
 let scrollPos = 0;
@@ -100,6 +108,7 @@ const scrollTriggerInstance = ScrollTrigger.create({
 
 
 gsap.ticker.add(stage.render.bind(stage));
+gsap.ticker.add(() => fallingCharEffect.update());
 
 function resize() {
   const innerWidth = carouselInnerRef.scrollWidth;
@@ -110,7 +119,12 @@ function resize() {
 
   scrollTriggerInstance.refresh();
 
+  scrollTriggerInstance.refresh();
+
   stage.resize();
+  fallingCharEffect.resize();
+  // re-set items to get new rects
+  fallingCharEffect.setCarouselItems(carouselItems);
 }
 
 preloadImages().then(() => document.body.classList.remove('loading'));
