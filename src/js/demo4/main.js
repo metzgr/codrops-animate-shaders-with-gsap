@@ -3,6 +3,7 @@ import { Draggable } from 'gsap/Draggable';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce, preloadImages } from '../utils';
+import { GlobalHeader } from '../components/GlobalHeader';
 import Stage from './Stage';
 import FallingCharEffect from './FallingCharEffect';
 import Commons from '../textEffect/Commons';
@@ -17,6 +18,11 @@ gsap.registerPlugin(Draggable, InertiaPlugin, ScrollTrigger);
 
 const carouselWrapper = document.querySelector('.content');
 const carouselInnerRef = document.querySelector('.content__carousel-inner');
+
+// Init Header
+new GlobalHeader();
+
+const loading = document.querySelector('.loading');
 
 // Process Data: Assign IDs per project
 const projectCounts = {};
