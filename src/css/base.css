@@ -173,6 +173,8 @@ a {
 
   .frame__description {
     color: var(--color-text);
+    font-family: "arimo", sans-serif;
+    font-weight: 400;
     font-size: 0.875rem;
     margin-top: 0.75rem;
 
