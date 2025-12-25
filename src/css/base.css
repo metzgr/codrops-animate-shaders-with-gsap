@@ -366,11 +366,11 @@ body #cdawrap {
   position: absolute;
   top: 0;
   left: 0;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Arimo', sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: #6495ed;
-  /* light blue */
+  color: var(--color-text);
+  /* matched to title color */
   user-select: none;
   pointer-events: none;
   will-change: transform;
