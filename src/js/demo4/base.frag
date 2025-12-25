@@ -48,5 +48,6 @@ vec4 multiPassKawaseBlur(sampler2D tex, vec2 uv, float blurStrength) {
 void main() {
   // Apply multi-pass Kawase blur with the given blur amount
   vec4 color = multiPassKawaseBlur(uTexture, vUv, uBlurAmount);
-  gl_FragColor = color;
+  // Force color to #F0EFE3, preserving the original alpha
+  gl_FragColor = vec4(0.941, 0.937, 0.890, color.a);
 }
