@@ -29,7 +29,7 @@ export default class FallingCharEffect {
         this.engine.gravity.y = 0.5; // Adjust gravity
 
         // Create random falling characters
-        const numChars = 150; // Use a reasonable number
+        const numChars = 300; // More intense downpour
         for (let i = 0; i < numChars; i++) {
             this.createFallingChar();
         }
@@ -44,7 +44,7 @@ export default class FallingCharEffect {
     createFallingChar() {
         const x = Math.random() * this.width;
         const y = Math.random() * -this.height * 2; // Start well above
-        const size = 14;
+        const size = 20;
 
         // Physics body
         const body = Matter.Bodies.rectangle(x, y, size, size, {
