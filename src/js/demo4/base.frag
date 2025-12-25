@@ -1,5 +1,6 @@
 uniform sampler2D uTexture;
 uniform float uBlurAmount;
+uniform float uHover;
 
 varying vec2 vUv;
 
@@ -48,6 +49,15 @@ vec4 multiPassKawaseBlur(sampler2D tex, vec2 uv, float blurStrength) {
 void main() {
   // Apply multi-pass Kawase blur with the given blur amount
   vec4 color = multiPassKawaseBlur(uTexture, vUv, uBlurAmount);
-  // Force color to #F0EFE3, preserving the original alpha
-  gl_FragColor = vec4(0.941, 0.937, 0.890, color.a);
+  
+  // Base beige color
+  vec3 beige = vec3(0.941, 0.937, 0.890);
+  // White color
+  vec3 white = vec3(1.0);
+  
+  // Mix based on hover
+  vec3 finalColor = mix(beige, white, uHover);
+  
+  // Force color, preserving the original alpha
+  gl_FragColor = vec4(finalColor, color.a);
 }

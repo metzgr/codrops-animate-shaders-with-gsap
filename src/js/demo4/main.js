@@ -47,6 +47,12 @@ processedData.forEach(item => {
       <span class="carousel-label__id">${item.seq}</span>
     </span>
   `;
+  div.addEventListener('mouseenter', () => {
+    stage.onHover(processedData.indexOf(item), true);
+  });
+  div.addEventListener('mouseleave', () => {
+    stage.onHover(processedData.indexOf(item), false);
+  });
   carouselInnerRef.appendChild(div);
 });
 

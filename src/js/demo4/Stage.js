@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import {
   Mesh,
   OrthographicCamera,
@@ -44,7 +45,7 @@ export default class Stage {
     });
   }
 
-  generatePlane(image, ) {
+  generatePlane(image,) {
     const loader = new TextureLoader();
     const texture = loader.load(image.src);
 
@@ -88,5 +89,16 @@ export default class Stage {
     this.DOMElements.forEach((image, index) => {
       this.scene.children[index].position.copy(getWorldPositionFromDOM(image, this.camera));
     });
+  }
+
+  onHover(index, isHovering) {
+    const plane = this.scene.children[index];
+    if (plane && plane.material.uniforms.uHover) {
+      gsap.to(plane.material.uniforms.uHover, {
+        value: isHovering ? 1.0 : 0.0,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    }
   }
 }

@@ -10,6 +10,7 @@ export default class PlanesMaterial extends ShaderMaterial {
       uniforms: {
         uTexture: { value: texture },
         uBlurAmount: { value: 0.0 },
+        uHover: { value: 0.0 },
       },
     });
   }

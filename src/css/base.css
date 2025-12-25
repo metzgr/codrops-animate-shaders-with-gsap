@@ -242,6 +242,8 @@ body #cdawrap {
 
     .content__carousel-inner {
       width: fit-content;
+      position: relative;
+      z-index: 10;
 
       display: flex;
       align-items: flex-end;
