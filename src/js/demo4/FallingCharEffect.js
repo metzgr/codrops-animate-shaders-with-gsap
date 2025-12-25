@@ -27,6 +27,8 @@ export default class FallingCharEffect {
         // Setup Matter.js
         this.engine = Matter.Engine.create();
         this.engine.gravity.y = 0.5; // Adjust gravity
+        this.engine.positionIterations = 10; // Improve collision accuracy
+        this.engine.velocityIterations = 8;  // Improve collision accuracy
 
         // Create random falling characters
         const numChars = 150; // Use a reasonable number
@@ -49,7 +51,7 @@ export default class FallingCharEffect {
         // Physics body
         const body = Matter.Bodies.rectangle(x, y, size, size, {
             friction: 0.1,
-            restitution: 0.6, // Bounciness
+            restitution: 0.3, // Less bouncy to prevent jumping out
             angle: Math.random() * Math.PI * 2
         });
 
