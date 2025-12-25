@@ -18,7 +18,7 @@ export const carouselData = [
     // Performance.gov
     { project: "Performance.gov", image: "18.webp" },
     { project: "Performance.gov", image: "22.webp" },
-    // More charts
-    { project: "More charts", image: "23.webp" },
-    { project: "More charts", image: "24.webp" },
+    // Charts, charts, charts
+    { project: "Charts, charts, charts", image: "23.webp" },
+    { project: "Charts, charts, charts", image: "24.webp" },
 ];
