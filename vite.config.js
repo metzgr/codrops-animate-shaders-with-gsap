@@ -21,6 +21,7 @@ export default defineConfig({
         demo2: resolve(__dirname, 'index2.html'),
         demo3: resolve(__dirname, 'index3.html'),
         demo4: resolve(__dirname, 'index4.html'),
+        project: resolve(__dirname, 'project.html'),
       },
     },
   },
