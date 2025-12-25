@@ -46,7 +46,7 @@ export default class FallingCharEffect {
     createFallingChar() {
         const x = Math.random() * this.width;
         const y = Math.random() * -this.height * 2; // Start well above
-        const size = 14;
+        const size = 15;
 
         // Physics body
         const body = Matter.Bodies.rectangle(x, y, size, size, {
@@ -61,7 +61,8 @@ export default class FallingCharEffect {
         // DOM Element
         const el = document.createElement('div');
         el.classList.add('falling-char');
-        el.textContent = '▮';
+        const chars = ['✜', '❙'];
+        el.textContent = chars[Math.floor(Math.random() * chars.length)];
         this.container.appendChild(el);
         this.domElements.push(el);
     }
