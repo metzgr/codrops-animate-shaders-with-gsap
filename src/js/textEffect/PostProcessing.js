@@ -21,9 +21,10 @@ export default class PostProcessing {
     lerpedVelocity = 0;
     lerpFactor = 0.15;
 
-    constructor({ scene }) {
+    constructor({ scene, enableVelocity = true }) {
         this.commons = Commons.getInstance();
         this.scene = scene;
+        this.enableVelocity = enableVelocity;
 
         this.createComposer();
         this.createPasses();
@@ -68,7 +69,7 @@ export default class PostProcessing {
         this.shiftPass.uniforms.uTime.value = this.commons.elapsedTime;
 
         // Lenis velocity
-        const targetVelocity = this.commons.lenis.velocity || 0;
+        const targetVelocity = this.enableVelocity ? (this.commons.lenis.velocity || 0) : 0;
 
         this.lerpedVelocity +=
             (targetVelocity - this.lerpedVelocity) * this.lerpFactor;

@@ -172,7 +172,7 @@ function initTextAnimation(lenisInstance) {
       });
     }
 
-    postProcessing = new PostProcessing({ scene });
+    postProcessing = new PostProcessing({ scene, enableVelocity: false });
 
     window.addEventListener("resize", () => {
       commons.onResize();
