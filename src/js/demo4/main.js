@@ -1,14 +1,46 @@
 import { gsap } from 'gsap';
-import { Draggable } from 'gsap/Draggable';
+import { Draggable } from 'gsap/draggable';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce, preloadImages } from '../utils';
 import Stage from './Stage';
 
+import { carouselData } from './carouselData';
+
 gsap.registerPlugin(Draggable, InertiaPlugin, ScrollTrigger);
 
 const carouselWrapper = document.querySelector('.content');
 const carouselInnerRef = document.querySelector('.content__carousel-inner');
+
+// Process Data: Assign IDs per project
+const projectCounts = {};
+const processedData = carouselData.map(item => {
+  if (!projectCounts[item.project]) projectCounts[item.project] = 0;
+  projectCounts[item.project]++;
+  const seq = String(projectCounts[item.project]).padStart(3, '0');
+  return { ...item, seq };
+});
+
+// Randomize Order
+for (let i = processedData.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [processedData[i], processedData[j]] = [processedData[j], processedData[i]];
+}
+
+// Clear and Inject HTML
+carouselInnerRef.innerHTML = '';
+processedData.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'content__carousel-image';
+  div.innerHTML = `
+    <img src="./images/${item.image}" alt="" role="presentation" />
+    <span class="carousel-label">
+      <span class="carousel-label__project">${item.project}</span>
+      <span class="carousel-label__id">${item.seq}</span>
+    </span>
+  `;
+  carouselInnerRef.appendChild(div);
+});
 
 const stage = new Stage(carouselWrapper);
 let scrollPos = 0;
@@ -31,9 +63,9 @@ const draggable = new Draggable(carouselInnerRef, {
   onThrowUpdate() {
     const progress = gsap.utils.normalize(draggable.maxX, draggable.minX, draggable.x);
     scrollPos = scrollTriggerInstance.start + (scrollTriggerInstance.end - scrollTriggerInstance.start) * progress;
-    
+
     scrollTriggerInstance.scroll(scrollPos);
-    
+
     if (stage.effect.callback) stage.effect.callback();
   },
 });
@@ -56,7 +88,7 @@ const scrollTriggerInstance = ScrollTrigger.create({
     draggable.update();
 
     if (stage.effect.callback) stage.effect.callback();
-    }
+  }
 });
 
 

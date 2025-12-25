@@ -270,8 +270,14 @@ body #cdawrap {
       cursor: pointer;
     }
 
-    span {
-      display: block;
+    span.carousel-label {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-text);
+      width: 100%;
     }
   }
 
