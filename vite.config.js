@@ -17,10 +17,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        demo1: resolve(__dirname, 'index.html'),
-        demo2: resolve(__dirname, 'index2.html'),
-        demo3: resolve(__dirname, 'index3.html'),
-        demo4: resolve(__dirname, 'index4.html'),
+        index: resolve(__dirname, 'index.html'),
         project: resolve(__dirname, 'project.html'),
       },
     },
