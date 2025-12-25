@@ -74,7 +74,17 @@ export default class WebGLText {
         // Wait, the new project uses `this.commons.lenis.actualScroll` in WebGLText.ts.
         // Assuming the new project uses a compatible version. I should check if `actualScroll` exists on the lenis instance I create.
         // If standard Lenis, it's usually `scroll` or `animatedScroll`.
-        const isFixed = this.computedStyle.position === 'fixed';
+        // Check if element or any parent is fixed
+        let el = this.element;
+        let isFixed = false;
+        while (el && el !== document.body) {
+            const style = window.getComputedStyle(el);
+            if (style.position === 'fixed') {
+                isFixed = true;
+                break;
+            }
+            el = el.parentElement;
+        }
 
         // If fixed, we don't include scroll in the initial Y calculation relative to document
         // We just want its viewport position
@@ -183,7 +193,8 @@ export default class WebGLText {
     addEventListeners() {
         inView(this.element, () => {
             this.show();
-            return () => this.hide();
+            // User requested title to "stay put", so we don't hide it on scroll out
+            // return () => this.hide(); 
         });
     }
 }
