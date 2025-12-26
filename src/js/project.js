@@ -3,6 +3,7 @@ import Commons from './textEffect/Commons';
 import WebGLText from './textEffect/WebGLText';
 import PostProcessing from './textEffect/PostProcessing';
 import * as THREE from 'three';
+import { GlobalHeader } from './components/GlobalHeader';
 
 // Data & Utils
 import { gsap } from 'gsap';
@@ -30,11 +31,14 @@ const layouts = [
 const params = new URLSearchParams(window.location.search);
 const projectName = params.get('project') || "President’s Management Agenda";
 
-const projectItems = carouselData.filter(item => item.project === projectName);
+// Init Header
+new GlobalHeader({
+    title: projectName,
+    subtitle: '', // No subtitle on project page? Or maybe we want one? Old HTML didn't have one in center div.
+    isProjectPage: true
+});
 
-const titleElement = document.querySelector('.frame__title');
-titleElement.textContent = projectName;
-titleElement.setAttribute('data-animation', 'webgl-text'); // Add trigger attribute
+document.title = `${projectName} - Ivan Metzger`;
 
 document.title = `${projectName} - Ivan Metzger`;
 

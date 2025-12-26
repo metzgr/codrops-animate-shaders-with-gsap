@@ -2,7 +2,7 @@ export class GlobalHeader {
     constructor(options = {}) {
         this.el = document.querySelector(options.element || 'header.frame');
         this.title = options.title || 'Ivan Metzger';
-        this.subtitle = options.subtitle || 'I design data-driven systems that help the Nation decide what to do next';
+        this.subtitle = options.subtitle || 'I design information products that help the Nation decide what to do next';
         this.isProjectPage = options.isProjectPage || false;
 
         this.init();
@@ -28,7 +28,7 @@ export class GlobalHeader {
                 ${this.subtitle ? `<p class="frame__description">${this.subtitle}</p>` : ''}
             </div>
             <nav class="frame__resume">
-                <a href="#">BIO</a>
+                <a href="#">GET IN TOUCH</a>
             </nav>
         `;
     }

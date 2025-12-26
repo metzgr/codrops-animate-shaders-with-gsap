@@ -175,7 +175,7 @@ a {
     color: var(--color-text);
     font-family: "arimo", sans-serif;
     font-weight: 400;
-    font-size: 14.5px;
+    font-size: 14px;
     margin-top: 1rem;
 
     @media (max-width: 767px) {
@@ -369,7 +369,7 @@ body #cdawrap {
   top: 0;
   left: 0;
   font-family: 'Syne', sans-serif;
-  font-size: 14px;
+  font-size: 28px;
   font-weight: 700;
   color: #6495ed;
   /* light blue */
