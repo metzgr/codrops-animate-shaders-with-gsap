@@ -173,7 +173,7 @@ a {
 
   .frame__description {
     color: var(--color-text);
-    font-family: "arimo", sans-serif;
+    font-family: 'Syne', sans-serif;
     font-weight: 400;
     font-size: 14px;
     margin-top: 1rem;
@@ -300,7 +300,7 @@ body #cdawrap {
       width: 100%;
 
       .carousel-label__id {
-        font-family: 'arimo', sans-serif;
+        font-family: 'Syne', sans-serif;
         font-weight: 400;
         font-size: 13px;
       }
