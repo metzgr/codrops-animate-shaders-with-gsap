@@ -26,7 +26,7 @@ export default class FallingCharEffect {
 
         // Setup Matter.js
         this.engine = Matter.Engine.create();
-        this.engine.gravity.y = 0.5; // Slower gravity
+        this.engine.gravity.y = 0.9; // Slower gravity
         this.engine.positionIterations = 10; // Improve collision accuracy
         this.engine.velocityIterations = 8;  // Improve collision accuracy
 
