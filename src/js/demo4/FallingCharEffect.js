@@ -26,7 +26,7 @@ export default class FallingCharEffect {
 
         // Setup Matter.js
         this.engine = Matter.Engine.create();
-        this.engine.gravity.y = 1.5; // Faster gravity
+        this.engine.gravity.y = .9; // Faster gravity
         this.engine.positionIterations = 10; // Improve collision accuracy
         this.engine.velocityIterations = 8;  // Improve collision accuracy
 
@@ -51,7 +51,7 @@ export default class FallingCharEffect {
         // Physics body
         const body = Matter.Bodies.rectangle(x, y, size, size, {
             friction: 0.1,
-            frictionAir: 0.005, // Less air resistance
+            frictionAir: 0.01, // Less air resistance
             restitution: 0.3, // Less bouncy to prevent jumping out
             angle: Math.random() * Math.PI * 2
         });
