@@ -43,6 +43,7 @@ document.title = `${projectName} - Ivan Metzger`;
 document.title = `${projectName} - Ivan Metzger`;
 
 const grid = document.querySelector('.grid');
+const projectItems = carouselData.filter(item => item.project === projectName);
 
 if (projectItems.length === 0) {
     grid.innerHTML = '<p style="text-align:center;">No images found for this project.</p>';
